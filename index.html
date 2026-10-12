@@ -284,65 +284,210 @@
       font-size: 0.75rem;
     }
 
-    /* ===== SELECTOR DE MESES ===== */
+    /* ===== SELECTOR DE MESES - REDISEÑO ESCALABLE ===== */
     .month-nav {
       background: var(--bg-card);
       border-radius: var(--radius);
-      padding: 12px 16px;
+      padding: 14px 16px;
       margin-bottom: 16px;
       box-shadow: var(--shadow);
       border-left: 4px solid var(--border-section-accent);
       display: flex;
-      gap: 8px;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* Selector de años (tabs superiores) */
+    .year-selector {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border-light);
       flex-wrap: wrap;
-      overflow-x: auto;
-      -webkit-overflow-scrolling: touch;
-      scrollbar-width: thin;
     }
 
-    .month-nav::-webkit-scrollbar {
-      height: 4px;
+    .year-selector-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-right: 6px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
     }
 
-    .month-nav::-webkit-scrollbar-track {
-      background: var(--bg-body);
-      border-radius: 2px;
-    }
-
-    .month-nav::-webkit-scrollbar-thumb {
-      background: var(--border);
-      border-radius: 2px;
-    }
-
-    .month-nav .btn {
-      padding: 8px 16px;
+    .year-tab {
+      padding: 6px 14px;
       border: 2px solid var(--border);
-      border-radius: 6px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 0.85rem;
+      transition: var(--transition);
+      background: white;
+      color: var(--text-primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      min-height: 32px;
+    }
+
+    .year-tab:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .year-tab.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+      box-shadow: 0 2px 6px rgba(25, 118, 210, 0.25);
+    }
+
+    .year-tab .month-count {
+      background: rgba(255, 255, 255, 0.25);
+      padding: 1px 7px;
+      border-radius: 10px;
+      font-size: 0.7rem;
+      font-weight: 700;
+    }
+
+    .year-tab.active .month-count {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Grid de meses */
+    .months-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .months-grid .btn {
+      padding: 10px 8px;
+      border: 2px solid var(--border);
+      border-radius: 8px;
       cursor: pointer;
       font-weight: 600;
       font-size: 0.85rem;
       transition: var(--transition);
       background: white;
       color: var(--text-primary);
-      white-space: nowrap;
-      flex-shrink: 0;
-      min-height: 36px;
+      text-align: center;
+      min-height: 44px;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
+      gap: 2px;
+      position: relative;
     }
 
-    .month-nav .btn.active {
-      background: var(--primary);
-      color: white;
-      border-color: var(--primary);
-      box-shadow: 0 2px 8px rgba(25, 118, 210, 0.3);
+    .months-grid .btn .month-name {
+      text-transform: capitalize;
+      font-size: 0.9rem;
     }
 
-    .month-nav .btn:hover:not(.active) {
+    .months-grid .btn .month-year {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .months-grid .btn:hover:not(.active) {
       border-color: var(--primary);
       color: var(--primary);
       background: var(--primary-light);
+      transform: translateY(-2px);
+      box-shadow: 0 3px 8px rgba(25, 118, 210, 0.15);
+    }
+
+    .months-grid .btn.active {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
+      border-color: var(--primary);
+      box-shadow: 0 4px 12px rgba(25, 118, 210, 0.35);
+      transform: translateY(-1px);
+    }
+
+    .months-grid .btn.active .month-year {
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    /* Indicador de mes actual */
+    .months-grid .btn.current-month::before {
+      content: '📍';
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      background: var(--orange);
+      color: white;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      font-size: 0.65rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      border: 2px solid white;
+    }
+
+    /* Estado vacío (año sin meses registrados) */
+    .months-grid.empty {
+      grid-template-columns: 1fr;
+      text-align: center;
+      padding: 20px;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      background: var(--bg-body);
+      border-radius: 8px;
+      border: 2px dashed var(--border);
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .months-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .months-grid .btn {
+        padding: 9px 6px;
+        min-height: 48px;
+      }
+
+      .months-grid .btn .month-name {
+        font-size: 0.85rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .month-nav {
+        padding: 12px;
+      }
+
+      .months-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px;
+      }
+
+      .months-grid .btn {
+        padding: 10px 6px;
+        min-height: 52px;
+      }
+
+      .year-selector-label {
+        width: 100%;
+        margin-bottom: 4px;
+      }
+
+      .year-tab {
+        flex: 1;
+        justify-content: center;
+        padding: 7px 10px;
+      }
     }
 
     /* ===== PRÓXIMOS 3 DÍAS ===== */
@@ -2936,6 +3081,15 @@
     <!-- SELECTOR DE MESES -->
     <div class="month-nav" id="monthSelector"></div>
 
+    <!-- STATS BAR -->
+    <div class="stats-bar">
+      <div class="stats-bar-header">
+        <h3>📊 Resumen del Mes</h3>
+        <span class="stats-bar-info" id="loadTime">(0.00s)</span>
+      </div>
+      <div class="stats-icons" id="statsIcons"></div>
+    </div>
+
     <!-- PRÓXIMOS 3 DÍAS CON EVENTOS -->
     <div class="upcoming-section" id="upcomingSection">
       <div class="upcoming-header">
@@ -2945,15 +3099,6 @@
       <div class="upcoming-cards" id="upcomingCards">
         <div class="loading">Cargando eventos próximos...</div>
       </div>
-    </div>
-
-    <!-- STATS BAR -->
-    <div class="stats-bar">
-      <div class="stats-bar-header">
-        <h3>📊 Resumen del Mes</h3>
-        <span class="stats-bar-info" id="loadTime">(0.00s)</span>
-      </div>
-      <div class="stats-icons" id="statsIcons"></div>
     </div>
 
     <!-- BÚSQUEDA -->
@@ -3089,7 +3234,10 @@
       'septiembre-2026': { label: 'Septiembre 2026', month: 8, year: 2026, csvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRO1ZbRTL-GFvFj-WXVY8kWq7vbuNJEv4gIC-7yKUHKsO6xi_ji8hACA3F1kxBSeKKBzxhbRwX3TMYK/pub?gid=1423292498&single=true&output=csv' },
       'octubre-2026': { label: 'Octubre 2026', month: 9, year: 2026, csvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRO1ZbRTL-GFvFj-WXVY8kWq7vbuNJEv4gIC-7yKUHKsO6xi_ji8hACA3F1kxBSeKKBzxhbRwX3TMYK/pub?gid=145828546&single=true&output=csv' },
       'noviembre-2026': { label: 'Noviembre 2026', month: 10, year: 2026, csvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRO1ZbRTL-GFvFj-WXVY8kWq7vbuNJEv4gIC-7yKUHKsO6xi_ji8hACA3F1kxBSeKKBzxhbRwX3TMYK/pub?gid=1146968063&single=true&output=csv' },
-      'diciembre-2026': { label: 'Diciembre 2026', month: 11, year: 2026, csvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRO1ZbRTL-GFvFj-WXVY8kWq7vbuNJEv4gIC-7yKUHKsO6xi_ji8hACA3F1kxBSeKKBzxhbRwX3TMYK/pub?gid=1380617218&single=true&output=csv' }
+      'diciembre-2026': { label: 'Diciembre 2026', month: 11, year: 2026, csvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRO1ZbRTL-GFvFj-WXVY8kWq7vbuNJEv4gIC-7yKUHKsO6xi_ji8hACA3F1kxBSeKKBzxhbRwX3TMYK/pub?gid=1380617218&single=true&output=csv' },
+
+      // 🆕 NUEVO: Enero 2027
+      'enero-2027': { label: 'Enero 2027', month: 0, year: 2027, csvUrl: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRO1ZbRTL-GFvFj-WXVY8kWq7vbuNJEv4gIC-7yKUHKsO6xi_ji8hACA3F1kxBSeKKBzxhbRwX3TMYK/pub?gid=1304282874&single=true&output=csv' }
 
     };
 
@@ -3120,6 +3268,8 @@
     const iconCache = new Map();
     const moneyFormatCache = new Map();
     let searchDebounceTimer = null;
+    // Estado para controlar si hay un mes seleccionado
+    let monthSelected = false;
 
     // ========================================
     // INICIALIZACIÓN
@@ -3147,21 +3297,214 @@
         });
     }
 
+    // ========================================
+    // SELECTOR DE MESES - REDISEÑO ESCALABLE
+    // ========================================
+    let currentYearFilter = new Date().getFullYear(); // Año visible por defecto
+
     function initMonthSelector() {
       const container = document.getElementById('monthSelector');
       container.innerHTML = '';
+
+      // 📅 Agrupar meses por año
+      const monthsByYear = {};
       Object.entries(SHEETS_CONFIG).forEach(([key, config]) => {
-        const btn = document.createElement('button');
-        btn.className = `btn ${key === currentMonth ? 'active' : ''}`;
-        btn.textContent = config.label;
-        btn.addEventListener('click', () => switchMonth(key));
-        container.appendChild(btn);
+        if (!monthsByYear[config.year]) monthsByYear[config.year] = [];
+        monthsByYear[config.year].push({ key, config });
+      });
+
+      // Ordenar meses dentro de cada año
+      Object.values(monthsByYear).forEach(months => {
+        months.sort((a, b) => a.config.month - b.config.month);
+      });
+
+      const years = Object.keys(monthsByYear).map(Number).sort();
+      const now = new Date();
+      const currentYear = now.getFullYear();
+      const currentMonthNum = now.getMonth();
+
+      // Asegurar que el año actual esté seleccionado si existe
+      if (monthsByYear[currentYear]) {
+        currentYearFilter = currentYear;
+      } else {
+        currentYearFilter = years[0];
+      }
+
+      // 🔖 SELECTOR DE AÑOS (tabs)
+      const yearSelector = document.createElement('div');
+      yearSelector.className = 'year-selector';
+      yearSelector.innerHTML = `
+        <span class="year-selector-label">📅 Año:</span>
+        ${years.map(year => {
+        const count = monthsByYear[year].length;
+        const isActive = year === currentYearFilter;
+        return `
+                <button class="year-tab ${isActive ? 'active' : ''}" 
+                        data-year="${year}" 
+                        onclick="filterMonthsByYear(${year})">
+                    ${year}
+                    <span class="month-count">${count}</span>
+                </button>
+            `;
+      }).join('')}
+    `;
+      container.appendChild(yearSelector);
+
+      // 📆 GRID DE MESES del año seleccionado
+      const monthsGrid = document.createElement('div');
+      monthsGrid.className = 'months-grid';
+      monthsGrid.id = 'monthsGrid';
+      container.appendChild(monthsGrid);
+
+      // Renderizar meses del año activo
+      renderMonthsGrid(monthsByYear[currentYearFilter], currentMonthNum, currentYear);
+    }
+
+    function renderMonthsGrid(months, currentMonthNum, currentYear) {
+      const grid = document.getElementById('monthsGrid');
+      if (!grid) return;
+
+      if (!months || months.length === 0) {
+        grid.className = 'months-grid empty';
+        grid.innerHTML = '📭 No hay meses registrados para este año';
+        return;
+      }
+
+      grid.className = 'months-grid';
+      const monthNames = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+        'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+
+      grid.innerHTML = months.map(({ key, config }) => {
+        const isActive = key === currentMonth;
+        const isCurrentMonth = config.year === currentYear && config.month === currentMonthNum;
+        const shortName = monthNames[config.month];
+
+        return `
+            <button class="btn ${isActive ? 'active' : ''} ${isCurrentMonth ? 'current-month' : ''}" 
+                    onclick="switchMonth('${key}')"
+                    title="${config.label}${isCurrentMonth ? ' (Mes actual)' : ''}">
+                <span class="month-name">${shortName}</span>
+                <span class="month-year">${config.year}</span>
+            </button>
+        `;
+      }).join('');
+    }
+
+    function filterMonthsByYear(year) {
+      currentYearFilter = year;
+      monthSelected = false; // ✅ Resetear selección de mes
+
+      // Actualizar tabs de años
+      document.querySelectorAll('.year-tab').forEach(tab => {
+        tab.classList.toggle('active', parseInt(tab.dataset.year) === year);
+      });
+
+      // Re-agrupar y renderizar solo los meses
+      const monthsByYear = {};
+      Object.entries(SHEETS_CONFIG).forEach(([key, config]) => {
+        if (!monthsByYear[config.year]) monthsByYear[config.year] = [];
+        monthsByYear[config.year].push({ key, config });
+      });
+
+      const now = new Date();
+      renderMonthsGrid(
+        monthsByYear[year]?.sort((a, b) => a.config.month - b.config.month) || [],
+        now.getMonth(),
+        now.getFullYear()
+      );
+
+      // ✅ OCULTAR todas las secciones de datos
+      hideDataSections();
+    }
+
+    // ✅ NUEVA FUNCIÓN: Ocultar secciones de datos
+    function hideDataSections() {
+      // Ocultar sección de próximos eventos
+      const upcomingSection = document.getElementById('upcomingSection');
+      if (upcomingSection) upcomingSection.classList.add('hidden');
+
+      // Ocultar barra de estadísticas
+      const statsBar = document.querySelector('.stats-bar');
+      if (statsBar) statsBar.style.display = 'none';
+
+      // Ocultar búsqueda
+      const searchContainer = document.querySelector('.search-container');
+      if (searchContainer) searchContainer.style.display = 'none';
+
+      // Ocultar tabs de contenido
+      const tabsNav = document.getElementById('tabsNav');
+      if (tabsNav) tabsNav.style.display = 'none';
+
+      // Ocultar todos los contenidos de tabs
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.style.display = 'none';
+      });
+
+      // Mostrar mensaje de selección
+      showMonthSelectionMessage();
+    }
+
+    // ✅ NUEVA FUNCIÓN: Mostrar mensaje de selección de mes
+    function showMonthSelectionMessage() {
+      // Crear contenedor si no existe
+      let messageContainer = document.getElementById('monthSelectionMessage');
+      if (!messageContainer) {
+        messageContainer = document.createElement('div');
+        messageContainer.id = 'monthSelectionMessage';
+        messageContainer.className = 'table-section';
+        messageContainer.style.marginTop = '16px';
+        document.querySelector('.container').appendChild(messageContainer);
+      }
+
+      messageContainer.innerHTML = `
+        <div style="text-align: center; padding: 40px 20px;">
+            <div style="font-size: 4rem; margin-bottom: 16px; opacity: 0.5;">📅</div>
+            <h3 style="color: var(--text-primary); font-size: 1.3rem; margin-bottom: 12px;">
+                Selecciona un mes para ver los datos
+            </h3>
+            <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; max-width: 500px; margin: 0 auto;">
+                Haz clic en cualquiera de los meses disponibles arriba para cargar los eventos, 
+                estadísticas y toda la información del mes seleccionado.
+            </p>
+            <div style="margin-top: 24px; padding: 16px; background: var(--primary-light); border-radius: 8px; border-left: 4px solid var(--primary); display: inline-block;">
+                <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 4px;">
+                    💡 <strong>Tip:</strong> Los meses con datos disponibles se mostrarán con el año correspondiente
+                </div>
+            </div>
+        </div>
+    `;
+      messageContainer.style.display = 'block';
+    }
+
+    // ✅ NUEVA FUNCIÓN: Mostrar secciones de datos
+    function showDataSections() {
+      // Ocultar mensaje de selección
+      const messageContainer = document.getElementById('monthSelectionMessage');
+      if (messageContainer) messageContainer.style.display = 'none';
+
+      // Mostrar barra de estadísticas
+      const statsBar = document.querySelector('.stats-bar');
+      if (statsBar) statsBar.style.display = 'block';
+
+      // Mostrar búsqueda
+      const searchContainer = document.querySelector('.search-container');
+      if (searchContainer) searchContainer.style.display = 'flex';
+
+      // Mostrar tabs de contenido
+      const tabsNav = document.getElementById('tabsNav');
+      if (tabsNav) tabsNav.style.display = 'flex';
+
+      // Restaurar display de tabs de contenido (se manejará en switchToDefaultTab)
+      document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.style.display = '';
       });
     }
 
     function switchMonth(monthKey) {
-      if (currentMonth === monthKey) return;
+      if (currentMonth === monthKey && monthSelected) return;
+
       currentMonth = monthKey;
+      monthSelected = true; // ✅ Marcar que hay mes seleccionado
       calendarCurrentMonth = null;
       localStorage.removeItem('avisoBannerClosed');
       document.getElementById('avisoBanner').style.display = 'none';
@@ -3172,10 +3515,26 @@
         avisoInterval = null;
       }
 
-      document.querySelectorAll('.month-nav .btn').forEach(btn => {
-        btn.classList.toggle('active', btn.textContent === SHEETS_CONFIG[monthKey].label);
+      // Actualizar botones de meses
+      document.querySelectorAll('.months-grid .btn').forEach(btn => {
+        const monthName = btn.querySelector('.month-name')?.textContent.toLowerCase();
+        const monthYear = btn.querySelector('.month-year')?.textContent;
+        const config = SHEETS_CONFIG[monthKey];
+        const monthNames = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+        const btnMonth = monthNames[config.month];
+
+        if (monthName === btnMonth && monthYear == config.year) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
       });
+
       dateCache.clear();
+
+      // ✅ MOSTRAR secciones de datos antes de cargar
+      showDataSections();
+
       loadMonthData(monthKey);
     }
 
